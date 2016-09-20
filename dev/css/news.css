@@ -1,0 +1,101 @@
+#main-content {
+	max-width: 1000px;
+	height: auto;
+	border-style: solid;
+	border-color: blue;
+	margin: 100px;
+	position: relative;
+	top: 50px;
+}
+
+#filter-menu {
+	display: block;
+	width: auto;
+	height: auto;
+	padding: 20px;
+	border-style: solid;
+	border-color: blue;
+	margin: 20px 20px;
+}
+
+#livenews-list {
+	display: block;
+	width: auto;
+	height: 500px;
+	border-style: solid;
+	border-color: blue;
+	margin: 20px 20px;
+}
+
+#more-button {
+	position: relative;
+	width: auto;
+	height: auto;
+	padding: 20px;
+	border-style: solid;
+	border-color: blue;
+}
+
+.span-more {
+	display: none;
+}
+
+.span-active {
+	text-align: center;
+	display: block;
+}
+
+.row>dt, .row>dd {
+	display: inline-block;
+}
+
+dt, dd {
+	border-style: solid;
+	border-color: red;
+	margin: 5px;
+}
+
+.row>div {
+	display: inline-block;
+}
+
+.active {
+	background-color: #91e374;
+}
+
+.search-box {
+	border-bottom-style: solid;
+	border-bottom-color: yellow;
+}
+
+.btn-clear {
+	display: none;
+}
+
+.loader {
+	position: absolute;
+	margin-left: 50%;
+}
+.circle {
+    box-sizing: border-box;
+    width: 80px;
+    height: 80px;
+    border-radius: 100%;
+    border: 10px solid rgba(153, 255, 153, 1);
+    border-top-color: rgba(255, 255, 255, 1);
+    animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+    100% {
+    	transform: rotate(360deg);
+    }
+}
+
+.highlight {
+	background-color: blue;
+}
+
+.footer-active {
+	display: none;
+}

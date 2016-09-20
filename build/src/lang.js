@@ -1,0 +1,1 @@
+"use strict";!function(){var a=navigator.language,n="/i18n/";switch(a){case"zh-CN":case"en":$.ajax({url:n+a+".json",async:!1,success:function(a){i18n.translator.add(a)}});break;default:$.ajax({url:n+"zh-CN.json",async:!1,success:function(a){i18n.translator.add(a)}})}}();

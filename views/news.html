@@ -1,0 +1,291 @@
+﻿<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->  
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->  
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->  
+<head>
+    <title></title>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="smartxt2.0 theme search">
+    <meta name="author" content="liucaizhong">    
+    <link rel="shortcut icon" href="/img/icon/favicon.ico">  
+    <!---<link href='http://fonts.googleapis.com/css?family=Roboto:400,400italic,500,500italic,700,700italic,900,900italic,300italic,300' rel='stylesheet' type='text/css'> 
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,700,300,100' rel='stylesheet' type='text/css'>--->
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">   
+    <!-- Plugins CSS -->    
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="/lib/flexslider/flexslider.css">
+    <!-- Theme CSS -->
+    <link id="theme-style" rel="stylesheet" href="/css/styles.css">
+    <!-- CSS for focus.html -->
+    <link rel="stylesheet" rel="stylesheet" href="/css/news.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head> 
+
+<body class="blog-page">
+    <div class="wrapper">
+        <!-- ******HEADER****** --> 
+        <header class="header header-blog">  
+            <div class="container">       
+                <h1 class="logo">
+                    <a href="#">Velocity <span class="sub">Blog</span></a>
+                </h1><!--//logo-->
+                <nav class="main-nav navbar-right" role="navigation">
+                    <div class="navbar-header">
+                        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button><!--//nav-toggle-->
+                    </div><!--//navbar-header-->
+                     <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <!--  <li class="nav-item dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">Categories <i class="fa fa-angle-down"></i></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="blog-category.html">Tech</a></li>
+                                    <li><a href="blog-category.html">Apps</a></li>
+                                    <li><a href="blog-category.html">News</a></li>
+                                    <li><a href="blog-category.html">Community</a></li>              
+                                </ul>                            
+                            </li>//dropdown  -->
+<!--                             <li class="nav-item dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">Archives <i class="fa fa-angle-down"></i></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="blog-archive.html">Sep 2014 (5)</a></li>
+                                    <li><a href="blog-archive.html">Aug 2014 (6)</a></li>
+                                    <li><a href="blog-archive.html">July 2014 (3)</a></li>
+                                    <li><a href="blog-archive.html">June 2014 (4)</a></li>              
+                                </ul>                            
+                            </li>//dropdown -->
+                            <li class="nav-item nav-item-main-site last"><a href="/index"><i class="fa fa-home"></i> Back to main site</a></li>
+                        </ul><!--//nav-->
+                        
+                        <div class="searchbox-container">
+                            <form class="searchbox">
+                                <label class="sr-only" for="search-form">Search</label>
+                                <input id="search-form" class="form-control searchbox-input" placeholder="Search the blog..." type="search" value="" name="search-form">
+                                <input class="searchbox-submit" type="submit" value="GO">
+                                <i class="fa fa-search searchbox-icon"></i>
+                            </form>
+                        </div><!--//searchbox-container-->                       
+
+                    </div><!--//navabr-collapse-->
+                </nav><!--//main-nav-->         
+            </div><!--//container-->
+        </header><!--//header-->         
+        
+        <div id="main-content">
+            <div id="filter-menu">
+                <div id="filter-option" onclick="onFilterChange(this, event)">
+                    <dl class="row">
+                        <dt>Stock</dt>
+                        <dd id="s1" class='active' data-value="1">All</dd>
+                        <dd id="s2" data-value="2">A</dd>
+                        <dd id="s3" data-value="3">H</dd>
+                        <dd id="s4" data-value="4">Overseas</dd>
+                    </dl>
+                    <dl class="row">
+                        <dt>Option</dt>
+                        <dd id="o1" class='active' data-value="1">All</dd>
+                        <dd id="o2" data-value="2">Only</dd>
+                    </dl>
+                    <dl class="row">
+                        <dt>Category</dt>
+                        <dd id="c1" class='active' data-value="1">All</dd>
+                        <dd id="c2" data-value="2">Change</dd>
+                        <dd id="c3" data-value="3">Buy</dd>
+                    </dl>
+                    <dl class="row">
+                        <dt>Industry</dt>
+                        <dd id="i1" class='active' data-value="1">All</dd>
+                        <dd id="i2" data-value="2">Media</dd>
+                        <dd id="i3" data-value="3">House</dd>
+                    </dl>
+                </div>
+                <hr>
+                <div class="row last">
+                    <div class="menu-title">
+                        search:
+                    </div>
+                    <div class="search-box">
+                        <input id="text-search" class="text-search" placeholder="please input" type="text" />
+                        <input id="btn-clear" class="btn-clear" onclick="onClear(this)" type="button" value="Clear" />
+                        <input id="btn-search" class="btn-search" onclick="onSearch(this)" type="button" value="Search" />
+                    </div>
+                </div>
+            </div> <!-- filter-menu -->
+
+            <div id="livenews-list">
+                <div class="loader">
+                </div>
+                <ul id="news-body">
+                    <!-- li: clockpane+newscontent -->
+                    <pre>
+                        德国9月ZEW经济景气指数0.5，预期2.5，前值0.5。
+                        德国9月ZEW经济现况指数55.1，预期56，前值57.6。
+                        14:00
+                        德国8月CPI环比终值0.0%，预期0.0%，初值0.0%。
+                        德国8月CPI同比终值0.4%，预期0.4%，初值0.4%。
+                        德国8月调和CPI环比终值-0.1%，预期-0.1%，初值-0.1%。
+                        德国8月调和CPI同比终值0.3%，预期0.3%，初值0.3%。
+                    </pre>
+                </ul>
+                <div id="more-button">
+                    <span class="span-more span-active">Load More</span>
+                    <span class="span-more">Loading</span>
+                </div>
+            </div>
+        </div> <!-- main-content -->
+                      
+    </div><!--//wrapper-->
+    
+    <!-- ******FOOTER****** --> 
+    <footer class="footer footer-active">
+        <div class="footer-content">
+            <div class="container">
+                <div class="row">                    
+                    <div class="footer-col links col-md-2 col-sm-4 col-xs-12">
+                        <div class="footer-col-inner">
+                            <h3 class="title">About us</h3>
+                            <ul class="list-unstyled">
+                                <li><a href="#"><i class="fa fa-caret-right"></i>Who we are</a></li>
+                                <li><a href="#"><i class="fa fa-caret-right"></i>Press</a></li>
+                                <li><a href="#"><i class="fa fa-caret-right"></i>Blog</a></li>
+                                <li><a href="#"><i class="fa fa-caret-right"></i>Jobs</a></li>
+                                <li><a href="#"><i class="fa fa-caret-right"></i>Contact us</a></li>
+                            </ul>
+                        </div><!--//footer-col-inner-->
+                    </div><!--//foooter-col-->    
+                    <div class="footer-col links col-md-2 col-sm-4 col-xs-12">
+                        <div class="footer-col-inner">
+                            <h3 class="title">Product</h3>
+                            <ul class="list-unstyled">
+                                <li><a href="#"><i class="fa fa-caret-right"></i>How it works</a></li>
+                                <li><a href="#"><i class="fa fa-caret-right"></i>API</a></li>
+                                <li><a href="#"><i class="fa fa-caret-right"></i>Download Apps</a></li>
+                                <li><a href="#"><i class="fa fa-caret-right"></i>Pricing</a></li>
+                            </ul>
+                        </div><!--//footer-col-inner-->
+                    </div><!--//foooter-col-->              
+                    <div class="footer-col links col-md-2 col-sm-4 col-xs-12 sm-break">
+                        <div class="footer-col-inner">
+                            <h3 class="title">Support</h3>
+                            <ul class="list-unstyled">
+                                <li><a href="#"><i class="fa fa-caret-right"></i>Help</a></li>
+                                <li><a href="#"><i class="fa fa-caret-right"></i>Documentation</a></li>
+                                <li><a href="#"><i class="fa fa-caret-right"></i>Terms of services</a></li>
+                                <li><a href="#"><i class="fa fa-caret-right"></i>Privacy</a></li>
+                            </ul>
+                        </div><!--//footer-col-inner-->            
+                    </div><!--//foooter-col-->   
+                    <div class="footer-col connect col-xs-12 col-md-6">
+                        <div class="footer-col-inner">
+                            <ul class="social list-inline">
+                                <li><a href="" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>        
+                                <li class="row-end"><a href="#"><i class="fa fa-rss"></i></a></li>             
+                            </ul>
+                            <div class="form-container">
+                                <p class="intro">Stay up to date with the latest news and offers from Velocity</p>
+                                <form class="signup-form navbar-form">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Enter your email address">
+                                    </div>   
+                                    <button type="submit" class="btn btn-cta btn-cta-primary">Subscribe Now</button>                                 
+                                </form>                               
+                            </div><!--//subscription-form-->
+                        </div><!--//footer-col-inner-->
+                    </div><!--//foooter-col-->
+                    <div class="clearfix"></div> 
+                </div><!--//row-->
+                <div class="row has-divider">
+                    <div class="footer-col download col-xs-12 col-md-6">
+                        <div class="footer-col-inner">
+                            <h3 class="title">Mobile apps</h3>
+                            <ul class="list-unstyled download-list">
+                                <li><a class="btn btn-ghost" href="#"><i class="fa fa-apple"></i><span class="text">Download for iOS</span> </a></li>
+                                <li><a class="btn btn-ghost" href="#"><i class="fa fa-android"></i><span class="text">Download for Android</span></a></li>
+                                <li><a class="btn btn-ghost" href="#"><i class="fa fa-windows"></i><span class="text">Windows coming soon...</span></a></li>
+                            </ul>
+                        </div><!--//footer-col-inner-->
+                    </div><!--//download-->
+                    <div class="footer-col contact col-xs-12 col-md-6">
+                        <div class="footer-col-inner">
+                            <h3 class="title">Contact us</h3>                          
+                            <p class="adr clearfix">
+                                <i class="fa fa-map-marker pull-left"></i>        
+                                <span class="adr-group pull-left">       
+                                    <span class="street-address">College Green</span><br>
+                                    <span class="region">56 College Green Road</span><br>
+                                    <span class="postal-code">BS1 XR18</span><br>
+                                    <span class="country-name">UK</span>
+                                </span>
+                            </p>
+                            <p class="tel"><i class="fa fa-phone"></i>0800 123 4567</p>
+                            <p class="email"><i class="fa fa-envelope-o"></i><a href="#">enquires@website.com</a></p> 
+                            <a href="" class="twitter-follow-button" data-show-count="false">Follow @3rdwave_themes</a>
+                        </div><!--//footer-col-inner-->
+                    </div><!--//contact-->
+                </div>
+            </div><!--//container-->
+        </div><!--//footer-content-->
+        <div class="bottom-bar">
+            <div class="container">
+                <small class="copyright">Copyright &copy; 2016.Company name All rights reserved.</small>                
+            </div><!--//container-->
+        </div><!--//bottom-bar-->
+    </footer><!--//footer-->
+    
+    <!-- Video Modal -->
+    <div class="modal modal-video" id="modal-video" tabindex="-1" role="dialog" aria-labelledby="videoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 id="videoModalLabel" class="modal-title sr-only">Video Tour</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="video-container">
+                        <iframe src="" width="720" height="405" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                    </div><!--//video-container-->
+                </div><!--//modal-body-->
+            </div><!--//modal-content-->
+        </div><!--//modal-dialog-->
+    </div><!--//modal-->
+ 
+    <!-- Javascript -->          
+    <script type="text/javascript" src="/lib/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript" src="/lib/bootstrap/js/bootstrap.min.js"></script> 
+    <script type="text/javascript" src="/lib/bootstrap-hover-dropdown.min.js"></script>
+    <script type="text/javascript" src="/lib/back-to-top.js"></script>
+    <script type="text/javascript" src="/lib/jquery-placeholder/jquery.placeholder.js"></script>
+    <script type="text/javascript" src="/lib/FitVids/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="/lib/flexslider/jquery.flexslider-min.js"></script> 
+            
+    <!-- blog page specific js starts --> 
+    <script type="text/javascript" src="/lib/imagesloaded/imagesloaded.pkgd.min.js"></script>     
+    <script type="text/javascript" src="/lib/masonry.pkgd.min.js"></script> 
+    <script type="text/javascript" src="/lib/i18n.min.js"></script>
+    <script type="text/javascript" src="/src/blog.js"></script>
+    <!-- blog page specific js ends -->   
+     
+    <script type="text/javascript" src="/src/main.js"></script>
+    <!-- js for focus.html -->
+    <script type="text/javascript" src="/src/init.js"></script>
+    <script type="text/javascript" src="/src/news.js"></script>
+            
+</body>
+</html> 
+
+
