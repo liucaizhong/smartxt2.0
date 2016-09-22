@@ -84,25 +84,33 @@
         </header><!--//header-->         
         
         <!-- search field -->
-        <div class="search-panel">
-            <div class="search-condition">
-                <div class="rows">
-                    <label for="stock">Stock</label>
-                    <input type="text" id="stock">
-                </div>
-                <div class="rows">
-                    <label for="topic">Topic</label>
-                    <input type="text" id="topic">
-                </div>
+        <div class="search-field">
+            <div class="search-period">
+                <span class="search-tab">10 days</span>
+                <span class="search-tab">20 days</span>
+                <span class="search-tab">30 days</span>
             </div>
-            <input type="button" value="submit" onclick="onSubmit(this)">
+            <div class="search-button">
+            <input type="text" placeholder="please input any information">
+            <input type="button" value="search">
+            </div>
+            <div class="search-person"> 
+            <span class="search-tab per">Buyer</span>   
+            <span class="search-tab per">Seller</span> 
+            <span class="search-tab per">All</span> 
+            </div>
+            <div class="search-theme">
+            </div>
+            <div id="searchMap" class="search-map">
+            </div>
         </div>    
         
         <!-- ******BLOG LIST****** --> 
         <div class="blog container">
             <div class="content">
-                <div id="chart-attention"></div>
-                <div id="chart-price"></div>
+                <h3>Investigation:<span id="object"></span></h3>
+                <hr>
+                <div class="list"></div>
             </div>
         </div><!--//blog-->        
     </div><!--//wrapper-->
@@ -236,6 +244,7 @@
     <script type="text/javascript" src="/lib/echarts.js"></script>
     <script type="text/javascript" src="/lib/macarons.js"></script>
     <script type="text/javascript" src="/lib/i18n.min.js"></script>
+    <script type="text/javascript" src="/lib/china.js"></script>
             
     <!-- blog page specific js starts --> 
     <script type="text/javascript" src="/lib/imagesloaded/imagesloaded.pkgd.min.js"></script>     
