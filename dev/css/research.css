@@ -1,0 +1,83 @@
+.search-field {
+    width: 90%;
+    height: 500px;
+    top: 50px;
+    margin: 100px;
+    border-style: dotted;
+    border-color: blue;
+}
+
+.search-period {
+	width: 40%;
+	height: auto;
+	display: inline-block;
+	border-style: dotted;
+    border-color: blue;
+    margin: 10px;
+}
+
+.search-button {
+	width: 50%;
+	display: inline-block;
+	border-style: dotted;
+    border-color: blue;
+    margin: 10px;
+}
+
+.search-tab {
+	margin: 5px 5px;
+	padding: 2px 2px;
+	background-color: #cff;
+}
+
+.search-person {
+	border-style: dotted;
+    border-color: blue;
+    margin: 10px;
+    width: 10%;
+    height: 100px;
+    position: relative;
+    display: inline-block;
+}
+
+.search-theme {
+	border-style: dotted;
+    border-color: blue;
+    margin: 10px;
+    width: 80%;
+    height: 100px;
+    position: relative;
+    display: inline-block;
+}
+
+.per {
+	float: left;
+	display: block;
+}
+
+.search-map {
+	border-style: dotted;
+    border-color: blue;
+    margin: 10px;
+    width: 90%;
+    height: auto;
+}
+
+.content {
+	border-style: dotted;
+    border-color: blue;
+    margin: 10px;
+    width: 100%;
+    height: auto;
+}
+
+.list {
+	overflow-y: scroll;
+}
+
+#dialog {
+    position: absolute;
+    border: 1px solid grey;
+    opacity: 0.8;
+    background: grey;
+}
