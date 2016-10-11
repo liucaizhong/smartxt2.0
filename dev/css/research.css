@@ -1,6 +1,6 @@
 .search-field {
     width: 90%;
-    height: 500px;
+    height: auto;
     top: 50px;
     margin: 100px;
     border-style: dotted;
@@ -40,7 +40,7 @@
     display: inline-block;
 }
 
-.search-theme {
+.search-industry {
 	border-style: dotted;
     border-color: blue;
     margin: 10px;
@@ -52,15 +52,14 @@
 
 .per {
 	float: left;
-	display: block;
 }
 
 .search-map {
 	border-style: dotted;
     border-color: blue;
     margin: 10px;
-    width: 90%;
-    height: auto;
+    width: 1000px;
+    height: 800px;
 }
 
 .content {
@@ -71,13 +70,31 @@
     height: auto;
 }
 
-.list {
-	overflow-y: scroll;
+.result>div {
+    width: 40%;
+    float:left;
+    border: 1px solid grey;
 }
 
-#dialog {
-    position: absolute;
-    border: 1px solid grey;
-    opacity: 0.8;
-    background: grey;
+#report-list {
+    overflow: auto;
 }
+
+.chosnSt {
+    border-right: 1px solid red;
+}
+
+.indus-tab {
+    margin: 5px 5px;
+    padding: 2px 2px;
+    background-color: #0cf;
+    float: left;
+}
+
+#search-industry>span:nth-child(1) {
+    opacity: 1;
+}
+#search-industry>span:nth-child(2) {
+    opacity: 0.55;
+}
+
