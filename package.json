@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "body-parser": "~1.15.1",
+    "bootstrap": "^4.0.0-alpha.4",
     "consolidate": "^0.14.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
@@ -29,5 +30,7 @@
     "gulp-postcss": "^6.1.1",
     "gulp-pug": "^3.0.4",
     "gulp-uglify": "^2.0.0"
-  }
+  },
+  "author": "liucaizhong",
+  "license": "Smartxt"
 }

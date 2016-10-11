@@ -60,7 +60,7 @@ function onFilterChange(that, event) {
 				break;
 		}
 
-		searchCondition[whichCondition].map(function (cur, index, arr) {
+		searchCondition[whichCondition].forEach(function (cur, index, arr) {
 
 			if (cur.key.substr(1, 1) == '1') {
 				if (cur.key != key) {

@@ -1,9 +1,14 @@
 'use strict';
 
-$(document).ready(function () {
+var searchMap = echarts.init(document.getElementById('searchMap'), 'macarons');
+var url = '/ou1.json';
+var resBuy = [],
+    resSell = [],
+    resAll = [];
+var resIndus = [],
+    resProv = [];
 
-    var searchMap = echarts.init(document.getElementById('searchMap'), 'macarons');
-    var url;
+$(document).ready(function () {
 
     $(window).on('resize', function () {
         searchMap.resize();
@@ -12,63 +17,173 @@ $(document).ready(function () {
     //get data
     $.ajax({
         url: url,
-        success: function success(data) {},
-        error: function error(err) {}
+        method: 'GET',
+        dataType: 'json',
+        success: function success(data) {
+            console.log(data);
+            resBuy = data.all[0].codes;
+            resSell = data.all[1].codes;
+            resAll = resBuy.concat(resSell);
+            resIndus = data.industry;
+            resProv = data.province;
+
+            //render industry list
+            _renderIndusList(resIndus);
+
+            //render map
+            _renderMap(searchMap, resProv);
+
+            //render results
+            _renderResults(resBuy);
+        },
+        error: function error(err) {
+            console.log(err);
+        }
     });
 });
 
-function _renderResults(id, data) {
-    var parent = document.getElementById(id);
+function _renderResults(data) {
+    var stList = document.getElementById('stock-list');
+    var repList = document.getElementById('report-list');
+    var res = [],
+        num = 0;
 
-    if (parent.childElementCount) {
-        $(parent).empty();
+    if (stList.childElementCount) {
+        $(stList).empty();
     }
 
-    data.map(function (cur, index, arr) {
-        var div = document.createElement('DIV');
-        //$(div).addClass
-        var span = document.createElement('SPAN');
-        $(span).text('first result').hover(_showDialog(event, obj), _hideDialog(event));
-        div.appendChild(span);
+    if (repList.childElementCount) {
+        $(repList).empty();
+    }
+
+    //input parameter is Object:Industry or Province
+    if (!Array.isArray(data)) {
+        var code = data.code;
+
+        code.forEach(function (code) {
+            resAll.forEach(function (cur) {
+                if (cur.code[0] === code) {
+                    res.push(cur);
+                }
+            });
+        });
+    } else {
+        res = data;
+    }
+
+    res.forEach(function (cur, n) {
+        cur.dates.forEach(function (rep, i) {
+            //render stock list
+            var stP = document.createElement('P');
+            var stCont = rep.date[0] + ' ' + cur.name[0] + ' ' + cur.code[0];
+            $(stP).text(stCont).attr('data-i', num++).hover(_showRepList, _hideRepList);
+            $(stList).append(stP);
+
+            //render report list
+            var reP = document.createElement('P');
+            var repCont = '';
+            rep.affs.forEach(function (aff) {
+                repCont += '<b>调研机构/研究人员:</b>' + aff.aff[0] + '/';
+                var repAuthor = '';
+                var repName = '';
+                aff.persons.person.forEach(function (per) {
+                    repAuthor += per + ' ';
+                });
+                if (aff.persons.report) {
+                    repName = '<b>相关研报:</b>';
+                    aff.persons.report.forEach(function (name) {
+                        repName += name.reportDate + ':' + name.reportName + '<br>';
+                    });
+                }
+
+                repCont += repAuthor + '<br>' + repName;
+            });
+
+            $(reP).html(repCont).css({ display: 'none' });
+            $(repList).append(reP);
+        });
     });
 }
 
-function _showDialog(e, obj) {
-    var text = $(e).text();
-    var x = 10;
-    var y = 10;
+function _showRepList(e) {
 
-    var div = document.createElement('DIV#dialog');
-    var child = document.createElement('P');
-    // $(child).html();
-    div.appendChild(child);
-    //$(div).addClass
+    var target = e.target;
 
-    $("body").append(div);
+    $(target).toggleClass('chosnSt');
 
-    $("#dialog").css({
-        "top": e.pageY + y + "px",
-        "left": e.pageX + x + "px"
-    }).show(1000);
+    var i = $(target).attr('data-i');
+    var rep = $("#report-list").children()[i];
+    $(rep).toggle();
+}
 
-    $(this).mousemove(function (e) {
-        $("#dialog").css({
-            "top": e.pageY + y + "px",
-            "left": e.pageX + x + "px"
-        }).show(1000);
+function _hideRepList(e) {
+    var target = e.target;
+
+    $(target).toggleClass('chosnSt');
+
+    var i = $(target).attr('data-i');
+    var rep = $("#report-list").children()[i];
+    $(rep).toggle();
+}
+
+function _renderIndusList(indus) {
+    var fragment = document.createDocumentFragment();
+
+    indus.forEach(function (cur, index) {
+        var tab = document.createElement('SPAN');
+        $(tab).text(cur.indus[0]);
+        $(tab).attr('data-index', index);
+        $(tab).addClass('indus-tab');
+        $(fragment).append(tab);
     });
+
+    $('#search-industry').append(fragment);
 }
 
-function _hideDialog(event) {
-    $("#dialog").remove();
+function onChosenIndus(that, event) {
+    var title = document.getElementById('object');
+    var index = $(event.target).attr('data-index');
+    var indusObj = resIndus[index];
+
+    if (indusObj) {
+        $(title).text(indusObj.indus[0]);
+        _renderResults(indusObj);
+    }
+
+    event.stopPropagation();
 }
 
-function _renderThemeList(data) {
-    var tab = document.createElement('SPAN');
+function onChosnPerson(that, event) {
+    var target = event.target;
+    if (target.tagName === 'SPAN') {
+        switch ($(target).attr('data-id')) {
+            case '1':
+                _renderResults(resBuy);
+                break;
+            case '2':
+                _renderResults(resSell);
+                break;
+            case '3':
+                _renderResults(resAll);
+                break;
+        }
+    }
 }
 
 function _renderMap(chart, data) {
 
+    //filter show data
+    var max = 0;
+    var showData = data.map(function (cur) {
+        max += parseInt(cur.count[0]);
+        return {
+            name: cur.prov[0],
+            value: cur.count[0],
+            more: { code: cur.code }
+        };
+    });
+
+    console.log(max);
     // configure echart
     chart.showLoading();
 
@@ -79,8 +194,8 @@ function _renderMap(chart, data) {
             },
             visualMap: {
                 min: 0,
-                max: 300,
-                splitNumber: 5,
+                max: max,
+                splitNumber: 20,
                 color: ['#d94e5d', '#50a3ba', '#eac736'],
                 textStyle: {
                     color: '#fff'
@@ -88,6 +203,7 @@ function _renderMap(chart, data) {
                 show: false
             },
             series: [{
+                name: '报告数',
                 type: 'map',
                 map: 'china',
                 label: {
@@ -103,10 +219,17 @@ function _renderMap(chart, data) {
                         areaColor: '#d94e5d'
                     }
                 },
-                data: data
+                data: showData
             }]
         },
         media: []
+    });
+
+    //bind click
+    chart.on('click', function (params) {
+        console.log(params);
+        var codes = params.data.more;
+        _renderResults(codes);
     });
 
     chart.hideLoading();

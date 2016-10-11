@@ -1,0 +1,103 @@
+'use strict';
+
+// for use in the future
+$(document).ready(function () {
+    //     // load i18n at first
+    //     var lang = navigator.language;
+    //     var path = '/i18n/';
+    //     switch (lang) {
+    //         case 'zh-CN':
+    //         case 'en':
+    //             $.ajax({
+    //                 url: path + lang + '.json',
+    //                 async: false,
+    //                 success: (data) => {
+    //                     i18n.translator.add(data);
+    //                 },
+    //                 error: (err) => {
+    //                     console.log(err);
+    //                 }
+    //             });
+    //             break;
+    //         default:
+    //             $.ajax({
+    //                 url: path + 'zh-CN.json',
+    //                 async: false,
+    //                 success: (data) => {
+    //                     i18n.translator.add(data);
+    //                 },
+    //                 error: (err) => {
+    //                     console.log(err);
+    //                 }
+    //             });
+    //     };
+
+    /* ======= Twitter Bootstrap hover dropdown ======= */
+    /* Ref: https://github.com/CWSpear/bootstrap-hover-dropdown */
+    /* apply dropdownHover to all elements with the data-hover="dropdown" attribute */
+
+    $('[data-hover="dropdown"]').dropdownHover();
+
+    /* ======= jQuery Placeholder ======= */
+    /* Ref: https://github.com/mathiasbynens/jquery-placeholder */
+
+    $('input, textarea').placeholder();
+
+    // hover show QRcode for weixin 
+    // apple to do .....
+    $('.weixin').hover(function (e) {
+        // console.log(e);
+        var top = e.pageY - 200;
+        var left = e.pageX - 80;
+        var qrCode = document.createElement('IMG');
+        qrCode.id = 'weixin-qr';
+        qrCode.src = '../img/icon/weixin.jpg';
+        $(qrCode).css({
+            'display': 'block',
+            'position': 'absolute',
+            'top': top,
+            'left': left
+        });
+
+        $('body').append(qrCode);
+    }, function (e) {
+        $('img').remove('#weixin-qr');
+    });
+});
+
+//load highlight function to jQuery
+$.fn.extend({
+    highlight: function highlight(keyword, config) {
+        if (typeof keyword == 'undefined') return;
+        var config = $.extend({
+            insensitive: true,
+            hlClass: 'highlight',
+            clearLast: true
+        }, config);
+        if (config.clearLast) {
+            $(this).find("strong." + config.hlClass).each(function () {
+                $(this).after($(this).text());
+                $(this).remove();
+            });
+        }
+        return this.each(function (index, element) {
+            $(element).highregx(keyword, config);
+        });
+    },
+    highregx: function highregx(query, config) {
+        query = this.unicode(query);
+        var regex = new RegExp("(<[^>]*>)|(" + query + ")", config.insensitive ? "ig" : "g");
+        this.html(this.html().replace(regex, function (a, b, c) {
+            return a.charAt(0) == "<" ? a : "<strong class=\"" + config.hlClass + "\">" + c + "</strong>";
+        }));
+    },
+    unicode: function unicode(s) {
+        var len = s.length;
+        var rs = '';
+        s = s.replace(/([-.*+?^${}()|[\]\/\\])/g, "\\$1");
+        for (var i = 0; i < len; i++) {
+            if (s.charCodeAt(i) > 255) rs += '\\u' + s.charCodeAt(i).toString(16);else rs += s.charAt(i);
+        }
+        return rs;
+    }
+});

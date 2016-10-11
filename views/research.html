@@ -94,12 +94,12 @@
             <input type="text" placeholder="please input any information">
             <input type="button" value="search">
             </div>
-            <div class="search-person"> 
-            <span class="search-tab per">Buyer</span>   
-            <span class="search-tab per">Seller</span> 
-            <span class="search-tab per">All</span> 
+            <div class="search-person" onclick="onChosnPerson(this,event)"> 
+            <span class="search-tab per" data-id='1'>Buyer</span>   
+            <span class="search-tab per" data-id='2'>Seller</span> 
+            <span class="search-tab per" data-id='3'>All</span> 
             </div>
-            <div class="search-theme">
+            <div id="search-industry" class="search-industry" onclick="onChosenIndus(this,event)">
             </div>
             <div id="searchMap" class="search-map">
             </div>
@@ -110,7 +110,10 @@
             <div class="content">
                 <h3>Investigation:<span id="object"></span></h3>
                 <hr>
-                <div class="list"></div>
+                <div class="result">
+                    <div id="stock-list"></div>
+                    <div id="report-list"></div>
+                </div>
             </div>
         </div><!--//blog-->        
     </div><!--//wrapper-->
@@ -232,7 +235,7 @@
     </div><!--//modal-->
  
     <!-- Javascript -->          
-    <script type="text/javascript" src="/lib/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript" src="/lib/jquery.min.js"></script>
     <script type="text/javascript" src="/lib/bootstrap/js/bootstrap.min.js"></script> 
     <script type="text/javascript" src="/lib/bootstrap-hover-dropdown.min.js"></script>
     <script type="text/javascript" src="/lib/back-to-top.js"></script>
@@ -241,10 +244,10 @@
     <script type="text/javascript" src="/lib/flexslider/jquery.flexslider-min.js"></script> 
 
     <!-- echarts -->
-    <script type="text/javascript" src="/lib/echarts.js"></script>
-    <script type="text/javascript" src="/lib/macarons.js"></script>
+    <script type="text/javascript" src="/lib/echarts/echarts.js"></script>
+    <script type="text/javascript" src="/lib/echarts/macarons.js"></script>
+    <script type="text/javascript" src="/lib/echarts/china.js"></script>
     <script type="text/javascript" src="/lib/i18n.min.js"></script>
-    <script type="text/javascript" src="/lib/china.js"></script>
             
     <!-- blog page specific js starts --> 
     <script type="text/javascript" src="/lib/imagesloaded/imagesloaded.pkgd.min.js"></script>     
@@ -252,7 +255,7 @@
     <script type="text/javascript" src="/src/blog.js"></script>
     <!-- blog page specific js ends -->   
      
-    <script type="text/javascript" src="/src/main.js"></script>
+    <script type="text/javascript" src="/src/index.js"></script>
     <!-- js for research.html -->
     <script type="text/javascript" src="/src/research.js"></script>
             

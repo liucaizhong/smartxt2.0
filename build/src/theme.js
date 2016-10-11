@@ -8,14 +8,29 @@ var type = 0;
 var max = [5, 1];
 var ALL = '1';
 //echarts
-var chart_attention = echarts.init(document.getElementById('chart-attention'), 'macarons');
+//var chart_attention = echarts.init(document.getElementById('chart-attention'), 'macarons');
 
 $(document).ready(function () {
+
+	//transfer data to json object
+	if (window.themeRes && window.themeCond) {
+		var themeRes = window.themeRes;
+		delete window['themeRes'];
+		themeRes = themeRes.replace(/&quot;+/g, '"').trim();
+		var themeObj = JSON.parse(themeRes);
+
+		var themeCond = window.themeCond;
+		delete window['themeCond'];
+		themeCond = themeCond.replace(/&quot;+/g, '"').trim();
+		$.extend(themeObj, JSON.parse(themeCond));
+		console.log(themeObj);
+	}
+
 	$('#theme').change(function (event) {
 		if (event.target.value) {
-			$('#btn_theme').removeAttr('disabled');
+			$('#btn_theme').removeClass('disabled');
 		} else {
-			$('#btn_theme').attr('disabled', true);
+			$('#btn_theme').addClass('disabled');
 		}
 	});
 
@@ -29,7 +44,7 @@ $(document).ready(function () {
 		chart_attention.resize();
 	});
 
-	_renderChartAttention(chart_attention, '/theme.json');
+	//_renderChartAttention(chart_attention, '/theme.json');
 });
 
 function onMethod(that, event) {
@@ -131,7 +146,7 @@ function _setSource(that, event) {
 			_addCondition($(target));
 		} else {
 			$(target).removeClass('color');
-			_removeCondition($(target), i);
+			_removeCondition($(target), index);
 		}
 	}
 
