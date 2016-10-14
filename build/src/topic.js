@@ -1,21 +1,96 @@
 'use strict';
 
+//which collection
+var whichCollection = {};
 //echarts
-var chartAttention = echarts.init(document.getElementById('chart-attention'), 'macarons');
-var chartPrice = echarts.init(document.getElementById('chart-price'), 'macarons');
-echarts.connect([chartAttention, chartPrice]);
+// var chartAttention = echarts.init(document.getElementById('chart-attention'), 'macarons');
+// var chartPrice = echarts.init(document.getElementById('chart-price'), 'macarons');
+// echarts.connect([chartAttention, chartPrice]);
 
 $(document).ready(function () {
+	//echart resize
 	$(window).on('resize', function () {
 		chartAttention.resize();
 		chartPrice.resize();
 	});
+
+	//form submit 
+	$('#form-topic').submit(function (e) {
+		e.preventDefault();
+		console.log('start submit handler');
+
+		onCollection($('#btn-collapse'));
+		var collections = $('div.collections').find('div.btn-valid');
+		Array.prototype.forEach.call(collections, function (cur) {
+			$(cur).removeClass('btn-valid').addClass('btn-invalid');
+		});
+	});
 });
 
-function onSubmit(that) {
-	_renderChart(chartAttention, '/theme.json');
-	_renderChart(chartPrice, '/theme.json');
+function onStar(that) {
+	var $btn = $(that);
+	$btn.toggleClass('collect');
+
+	//add event to collection
+	//to do
 }
+
+function onCollection(that) {
+	var $trigger = $(that);
+
+	if ($trigger.hasClass('fa-angle-double-down')) {
+		$trigger.removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
+	} else if ($trigger.hasClass('fa-angle-double-up')) {
+		$trigger.removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
+	}
+
+	//show collection
+	//to do later
+	//ajax get collections
+
+	$('div.collections').css({ "display": "table" });
+	$('div.collections>*').slideToggle(1000);
+}
+
+function delStar(that) {
+	//undo collect
+	var $btn = $(that);
+	whichCollection = that;
+	$btn.toggleClass('undo-collect');
+
+	$('div#info-msg').show(500);
+}
+
+function onCheckCollection(that) {
+	//check collection
+	var parent = $(that).parent();
+	$(parent).removeClass('btn-invalid').addClass('btn-valid');
+
+	//ajax get show echarts
+	//to do later
+}
+
+function delCollection(that) {
+	var collection = $(whichCollection).parent().parent();
+	whichCollection = {};
+	//ajax post delete collection in the database
+	//to do later
+
+	collection.remove();
+	$('div#info-msg').hide(500);
+}
+
+function delAlert(that) {
+	var parent = $(that).parent();
+	$(parent).hide(500);
+
+	if (whichCollection) {
+		$(whichCollection).toggleClass('undo-collect');
+		whichCollection = {};
+	}
+}
+
+function onSubmit(that) {}
 
 function _renderChart(chart, url) {
 
