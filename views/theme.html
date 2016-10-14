@@ -10,12 +10,13 @@
     <meta name="author" content="liucaizhong">    
     <link rel="shortcut icon" href="/img/icon/favicon.ico">  
     <!-- Global CSS -->
-    <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">   
+    <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
+    <!-- Datepicker -->
+    <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap-datetimepicker.min.css">
     <!-- Plugins CSS -->    
     <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
     <!-- Theme CSS -->
     <link rel="stylesheet" href="/css/styles.css">
-    <link rel="stylesheet" href="/css/theme.css">
 </head> 
 
 <body>
@@ -58,77 +59,139 @@
                         </ul>
                     </div><!-- //main-nav -->
                 </nav><!-- //nav -->
-            </div><!-- //nav-right  -->       
+            </div><!-- //nav-right  -->   
         </div><!--//container-->
+        <div id="slide-trigger" class="slide-trigger" onclick="onTriggerSlide(this)">
+            <i class="fa fa-angle-double-down fa-2x" aria-hidden="true"></i>
+            <!-- <i class="fa fa-angle-double-up fa-2x" aria-hidden="true"></i> -->
+        </div>    
     </header><!--//header-->      
     
     <!-- ******CONDITIONS****** -->
-    <section class="conditions">
-        <div class="container">
-            
+    <section class="theme-conditions">
+        <div class="container bottom-line">
+            <form id="form-theme" action="">
+                <!-- method -->
+                <div class="form-group row">
+                    <label for="btnMethod" class="col-xs-4 col-lg-2 col-form-label form-label"><i class="fa fa-search" aria-hidden="true"></i>采样方式</label>
+                    <div id="btnMethod" class="col-xs-8 col-lg-10">
+                        <button id="m0" type="button" class="btn btn-valid" onclick="onMethod(this)">按主题</button>
+                        <button id="m1" type="button" class="btn btn-invalid" onclick="onMethod(this)">按来源</button>
+                    </div>
+                </div>
+                <!-- date -->
+                <div class="form-group row well">
+                    <label for="datepicker" class="col-xs-4 col-lg-2 col-form-label form-label"><i class="fa fa-calendar" aria-hidden="true"></i>回溯日期</label>
+                    <div id="datepicker" class="col-xs-8 col-lg-10 input-append date-picker bottom-line">
+                        <input data-format="dd/MM/yyyy" type="text" class="date-input"></input>
+                        <span class="add-on">
+                          <i class="fa fa-calendar" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                </div>
+                <!-- period -->
+                <div class="form-group row">
+                    <label for="btnPeriod" class="col-xs-4 col-lg-2 col-form-label form-label"><i class="fa fa-clock-o" aria-hidden="true"></i>样本天数</label>
+                    <div id="btnPeriod" class="col-xs-8 col-lg-10">
+                        <button id="p0" type="button" class="btn btn-valid" onclick="onPeriod(this)">10天</button>
+                        <button id="p1" type="button" class="btn btn-invalid" onclick="onPeriod(this)">30天</button>
+                        <button id="p2" type="button" class="btn btn-invalid" onclick="onPeriod(this)">60天</button>
+                        <button id="p3" type="button" class="btn btn-invalid" onclick="onPeriod(this)">90天</button>
+                        <button id="p4" type="button" class="btn btn-invalid" onclick="onPeriod(this)">120天</button>
+                    </div>
+                </div>
+                <!-- source -->
+                <div class="form-group row">
+                    <label for="btnSource" class="col-xs-4 col-lg-2 col-form-label form-label"><i class="fa fa-users" aria-hidden="true"></i>关注人群</label>
+                    <div id="btnSource" class="col-xs-8 col-lg-10">
+                        <button id="s0" type="button" class="btn btn-valid" onclick="onSource(this)">投资者总体</button>
+                        <button id="s1" type="button" class="btn btn-invalid" onclick="onSource(this)">散户群体</button>
+                        <button id="s2" type="button" class="btn btn-invalid" onclick="onSource(this)">从业人群</button>
+                        <button id="s3" type="button" class="btn btn-invalid" onclick="onSource(this)">新闻媒体</button>
+                    </div>
+                </div>
+                <!-- theme -->
+                <div class="form-group row">
+                    <label for="theme" class="col-xs-4 col-lg-2 col-form-label form-label theme-label"><i class="fa fa-file-text-o" aria-hidden="true"></i>主题信息</label>
+                    <div id="theme" class="col-xs-8 col-lg-10">
+                        <input id="theme-input" type="text" class="theme-input" placeholder="输入关键字用于描述要查询的主题信息，例如 钢铁"></input>
+                        <span>
+                          <i class="fa fa-plus-circle fa-2x" aria-hidden="true" onclick="addTheme(this)"></i>
+                        </span>
+                    </div>
+                </div>
+                <!-- theme tags -->
+                <div id="theme-tags" class="theme-tags form-group row">
+                    <div class="theme-tag alert alert-success col-xs-3 col-lg-2 none" value="0">
+                        <span class="theme-txt"></span>
+                        <button id="t0" type="button" class="close" aria-label="Close" onclick="delThemeTag(this)">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="theme-tag alert alert-success col-xs-3 col-lg-2 none" value="0">
+                        <span class="theme-txt"></span>
+                        <button id="t1" type="button" class="close" aria-label="Close" onclick="delThemeTag(this)">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="theme-tag alert alert-success col-xs-3 col-lg-2 none" value="0">
+                        <span class="theme-txt"></span>
+                        <button id="t2" type="button" class="close" aria-label="Close" onclick="delThemeTag(this)">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- submit -->
+                <button type="submit" class="btn btn-primary offset-xs-2 offset-lg-2 btn-submit">生成图表</button>
+            </form>
+            <div id="error-msg" class="none alert alert-danger alert-dismissible" role="alert">
+              <button type="button" class="close" aria-label="Close" onclick="delAlert(this)">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              <strong></strong> 
+            </div>
         </div>
     </section>
-        <div class="theme-condition">
-            <div class="theme-option">
-                <dl id="method" onclick="onMethod(this,event)">
-                    <dt>
-                        <i class="theme-icon"></i>
-                        Method
-                    </dt>
-                    <dd id="m1" data-value="1">Theme</dd>
-                    <dd id="m2" data-value="2">Source</dd>
-                </dl>
-            </div>
-            <div id="option">
-                <div class="theme-option">
-                    <label for="theme">Theme</label>
-                    <input id="theme" type="text" placeholder="Please input theme">
-                    <button id="btn_theme" class="btn disabled" onclick="onTheme(this)">Add</button>
-                    <span id="tMsg"></span>
-                </div>
-                <div id="theme_list">
-                    <dl id="theme_chosen" class="theme-option" onclick="onThemeChosen(this,event)">
-                        <dt>
-                            <i class="theme-icon"></i>
-                            Chosen Theme
-                        </dt>
-                    </dl>
-                </div>
-                <div class="theme-option">
-                    <dl id="source" onclick="onSource(this,event)">
-                        <dt>
-                            <i class="theme-icon"></i>
-                            Source
-                        </dt>
-                        <dd id="s1" data-value="1">All</dd>
-                        <dd id="s2" data-value="2">People</dd>
-                        <dd id="s3" data-value="3">Profession</dd>
-                        <dd id="s4" data-value="4">Media</dd>
-                        <span id="sMsg"></span>
-                    </dl>
-                </div>
-                <div class="theme-option">
-                    <label for="d1">Date</label>
-                    <input id="d1" type="date">
-                    <span id="dMsg"></span>
-                </div>
-                <div class="theme-option">
-                    <dl id="period" onclick="onPeriod(this, event)">
-                        <dt class="pt">
-                            <i class="theme-icon"></i>
-                            Period
-                        </dt>
-                        <dd id="p1" data-value="1">10</dd>
-                        <dd id="p2" data-value="2">30</dd>
-                        <dd id="p3" data-value="3">60</dd>
-                        <dd id="p4" data-value="4">90</dd>
-                        <dd id="p5" data-value="5">120</dd>
-                        <span id="pMsg"></span>
-                    </dl>
-                </div>
-                <button type="submit" onclick="onSubmit()">submit</button>
-            </div> 
-        </div>
+
+    <!-- ******CHARTS****** -->
+    <section class="charts">
+        <h1>charts</h1>
+        <pre>
+            1
+            2
+            3
+            4
+            5
+        </pre>
+    </section>
+    <section class="charts">
+        <h1>charts</h1>
+        <pre>
+            1
+            2
+            3
+            4
+        </pre>
+    </section>
+    <section class="charts">
+        <h1>charts</h1>
+        <pre>
+            1
+            2
+            3
+            4
+        </pre>
+    </section>
+    <section class="charts">
+        <h1>charts</h1>
+        <pre>
+            1
+            2
+            3
+            4
+        </pre>
+    </section>
      
     <!-- ******FOOTER****** --> 
     <footer class="footer">
@@ -161,6 +224,7 @@
     <!-- bootstrap -->
     <script type="text/javascript" src="/lib/bootstrap/js/bootstrap.min.js"></script> 
     <script type="text/javascript" src="/lib/bootstrap/plugins/bootstrap-hover-dropdown.min.js"></script>
+    <script type="text/javascript" src="/lib/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
     <!-- i18n used in future -->
     <!-- <script type="text/javascript" src="/lib/i18n/i18n.min.js"></script> -->
     <!-- echarts -->
