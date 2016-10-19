@@ -88,6 +88,9 @@ function loadMore(that) {
 		
 		$('charts>div.container').append(chartDiv);
 	}
+	//if none,hide button
+	//if more,update button
+	//to do later
 	$btn.text('浏览更多');
 	console.log('charts', charts);
 }
