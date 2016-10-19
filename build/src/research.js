@@ -1,40 +1,83 @@
 'use strict';
 
+//global parameters
 var searchMap = echarts.init(document.getElementById('searchMap'), 'macarons');
-var url = '/ou1.json';
 var resBuy = [],
     resSell = [],
     resAll = [];
 var resIndus = [],
     resProv = [];
+var mapIndex = -1;
+var $resultItem = null;
 
 $(document).ready(function () {
 
+    //echarts resize
     $(window).on('resize', function () {
         searchMap.resize();
     });
 
+    //initialize popover
+    $('body').popover({
+        placement: 'right',
+        trigger: 'manual'
+        // delay: {hide: '5000000'}
+        // selector: '[data-toggle="popover"]'
+        // template: '<div class="popover" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-title"></h3><pre class="popover-content"></pre></div>'
+    });
+
+    //hover handler:aria-describedby
+    // $('[data-toggle="popover"]').hover(function(e) {   
+    //     var $tar = $(e.target);
+    //     $tar.popover('show');
+
+    // }, function(e) {
+    //     var $tar = $(e.target);
+    //     var popId = $tar.attr('aria-describedby');
+    //     if(popId) {
+    //         var pop = $('#'+popId)[0];
+    //         var $pop = $(pop);
+    //         //set value for target
+    //         $resultItem = $tar;
+
+    //         //mouseleave listener for popover
+    //         $pop.hover(function(e) {
+    //             if($resultItem) {
+    //                 if(!$resultItem.hasClass('hover-item-content')) {
+    //                     $resultItem.addClass('hover-item-content');
+    //                 }
+    //             }
+    //         }, function(e) {
+    //             //get mouse position
+    //             var clientX = e.pageX;
+    //             var clientY = e.pageY;
+
+    //             if($resultItem) {
+    //                 //get $resultItem info
+    //                 var width = $resultItem.width();
+    //                 var height = $resultItem.height();
+    //                 var X = $resultItem.offset().left;
+    //                 var Y = $resultItem.offset().top;
+
+    //                 if(clientX > X && clientY > Y && clientX < X + width + 10 && clientY < Y + height) {
+    //                 } else {
+    //                     $resultItem.removeClass('hover-item-content');
+    //                     $resultItem.popover('hide');
+    //                     $resultItem = null;
+    //                 }
+    //             }
+    //         });
+    //     }
+    // });
+
     //get data
+    //default 10days
     $.ajax({
-        url: url,
+        url: '/survey.20160929.json',
         method: 'GET',
         dataType: 'json',
         success: function success(data) {
-            console.log(data);
-            resBuy = data.all[0].codes;
-            resSell = data.all[1].codes;
-            resAll = resBuy.concat(resSell);
-            resIndus = data.industry;
-            resProv = data.province;
-
-            //render industry list
-            _renderIndusList(resIndus);
-
-            //render map
-            _renderMap(searchMap, resProv);
-
-            //render results
-            _renderResults(resBuy);
+            _renderData(data);
         },
         error: function error(err) {
             console.log(err);
@@ -42,19 +85,134 @@ $(document).ready(function () {
     });
 });
 
+function _renderData(data) {
+    console.log(data);
+    resBuy = data.all[0].codes;
+    resSell = data.all[1].codes;
+    resAll = resBuy.concat(resSell);
+    resIndus = data.industry;
+    resProv = data.province;
+
+    //render industry list
+    _renderTheme(resIndus);
+
+    //render map
+    _renderMap(searchMap, resProv);
+
+    //render results
+    _renderResults(resAll);
+}
+
+function onPeriod(that) {
+    var $btn = $(that);
+    if ($btn.hasClass('btn-invalid')) {
+        //clear valid period button
+        _clearPeriod();
+        //clear valid source button
+        //and set default valid button
+        _clearSource();
+        $('#s0').removeClass('btn-invalid').addClass('btn-valid');
+        //clear valid theme button
+        _clearTheme();
+
+        $btn.removeClass('btn-invalid').addClass('btn-valid');
+        //get json
+        //to do later
+    }
+}
+
+function _clearPeriod() {
+    var children = $('#btnPeriod').children('button.btn-valid');
+    Array.prototype.forEach.call(children, function (cur) {
+        $(cur).removeClass('btn-valid').addClass('btn-invalid');
+    });
+}
+
+function onSource(that) {
+    var $btn = $(that);
+    if ($btn.hasClass('btn-invalid')) {
+        _clearSource();
+        _clearTheme();
+        _clearMap(searchMap);
+        $btn.removeClass('btn-invalid').addClass('btn-valid');
+        //render results
+        var renderId = $btn.attr('id')[1];
+        switch (renderId) {
+            case '0':
+                _renderResults(resAll);
+                break;
+            case '1':
+                _renderResults(resBuy);
+                break;
+            case '2':
+                _renderResults(resSell);
+                break;
+        }
+    }
+}
+
+function _clearSource() {
+    var children = $('#btnSource').children('button.btn-valid');
+    Array.prototype.forEach.call(children, function (cur) {
+        $(cur).removeClass('btn-valid').addClass('btn-invalid');
+    });
+}
+
+function _renderTheme(indus) {
+    var fragment = document.createDocumentFragment();
+
+    indus.forEach(function (cur, index) {
+        var tag = document.createElement('SPAN');
+        $(tag).attr('id', 't' + index).addClass('research-tag-invalid').text(cur.indus[0]);
+        $(fragment).append(tag);
+    });
+
+    $('#btnTheme').append(fragment);
+}
+
+function onTheme(that, event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    var $target = $(event.target);
+    var tagName = event.target.tagName;
+
+    if (tagName === 'SPAN' && $target.hasClass('research-tag-invalid')) {
+        _clearTheme();
+        _clearSource();
+        _clearMap(searchMap);
+        $target.removeClass('research-tag-invalid').addClass('research-tag-valid');
+        var themeObj = resIndus[$target.attr('id')[1]];
+        console.log('themeObj', themeObj);
+        //render results
+        _renderResults(themeObj);
+    }
+}
+
+function _clearTheme() {
+    var children = $('#btnTheme').children('span.research-tag-valid');
+    Array.prototype.forEach.call(children, function (cur) {
+        $(cur).removeClass('research-tag-valid').addClass('research-tag-invalid');
+    });
+}
+
 function _renderResults(data) {
-    var stList = document.getElementById('stock-list');
-    var repList = document.getElementById('report-list');
+
+    var $resultList = $('#result-list');
+
+    //clear all of its content
+    if ($resultList.children() || $resultList.children().length) {
+        $resultList.empty();
+    }
+
+    //if data is null
+    if (!data) {
+        $resultList.append($('<p>没有相关的调研记录</p>'));
+        return;
+    }
+
     var res = [],
         num = 0;
-
-    if (stList.childElementCount) {
-        $(stList).empty();
-    }
-
-    if (repList.childElementCount) {
-        $(repList).empty();
-    }
 
     //input parameter is Object:Industry or Province
     if (!Array.isArray(data)) {
@@ -73,101 +231,137 @@ function _renderResults(data) {
 
     res.forEach(function (cur, n) {
         cur.dates.forEach(function (rep, i) {
-            //render stock list
-            var stP = document.createElement('P');
-            var stCont = rep.date[0] + ' ' + cur.name[0] + ' ' + cur.code[0];
-            $(stP).text(stCont).attr('data-i', num++).hover(_showRepList, _hideRepList);
-            $(stList).append(stP);
+            //create element
+            var fragment = document.createElement('DIV');
+            var $fragment = $(fragment);
+            $fragment.addClass('col-xs-6').addClass('col-lg-3');
+            var card = document.createElement('DIV');
+            var $card = $(card);
+            $card.addClass('research-card');
+            //render card header
+            var header = document.createElement('DIV');
+            $(header).addClass('card-header');
+            //create h5
+            var h5 = document.createElement('H5');
+            $(h5).addClass('research-card-title').text(rep.date[0]);
+            $(header).append(h5);
+            //create p
+            var p = document.createElement('P');
+            $(p).addClass('research-card-text').text(cur.name[0] + '(' + cur.code[0] + ')');
+            $(header).append(p);
+            //append header to card
+            $card.append(header);
 
-            //render report list
-            var reP = document.createElement('P');
-            var repCont = '';
+            //render card content
+            var content = document.createElement('DIV');
+            $(content).addClass('card-content');
+            //create item
+            var item = document.createElement('DIV');
+            var $item = $(item);
+            $item.addClass('card-item');
+            //create span
+            var span = document.createElement('SPAN');
+            $(span).addClass('item-title').text('调查机构/研究员:');
+            $item.append(span);
+
             rep.affs.forEach(function (aff) {
-                repCont += '<b>调研机构/研究人员:</b>' + aff.aff[0] + '/';
-                var repAuthor = '';
-                var repName = '';
+                //create item content
+                var spanContent = document.createElement('SPAN');
+                var $spanContent = $(spanContent);
+                $spanContent.addClass('item-content').attr('data-toggle', 'popover');
+                //hover handler:aria-describedby
+                $spanContent.hover(function (e) {
+                    var $tar = $(e.target);
+                    $tar.popover('show');
+                    var popId = $tar.attr('aria-describedby');
+                    var pop = $('#' + popId)[0];
+                    var oldContent = $(pop).find('div.popover-content')[0];
+                    var newContent = document.createElement('PRE');
+                    $(newContent).text($(oldContent).text());
+                    $(oldContent).text('').append(newContent);
+                }, function (e) {
+                    var $tar = $(e.target);
+                    var popId = $tar.attr('aria-describedby');
+                    if (popId) {
+                        var pop = $('#' + popId)[0];
+                        var $pop = $(pop);
+                        //set value for target
+                        $resultItem = $tar;
+                        //get mouse position
+                        var clientX = e.pageX;
+                        var clientY = e.pageY;
+                        //get $resultItem info
+                        var width = $resultItem.width();
+                        var height = $resultItem.height();
+                        var X = $resultItem.offset().left;
+                        var Y = $resultItem.offset().top;
+                        if (clientX > X && clientX < X + width + 10 && (clientY > Y + height || clientY < Y)) {
+                            $resultItem.removeClass('hover-item-content');
+                            $resultItem.popover('hide');
+                            $resultItem = null;
+                        }
+
+                        //mouseleave listener for popover
+                        $pop.hover(function (e) {
+                            if ($resultItem) {
+                                if (!$resultItem.hasClass('hover-item-content')) {
+                                    $resultItem.addClass('hover-item-content');
+                                }
+                            }
+                        }, function (e) {
+                            //get mouse position
+                            var clientX = e.pageX;
+                            var clientY = e.pageY;
+
+                            if ($resultItem) {
+                                //get $resultItem info
+                                var width = $resultItem.width();
+                                var height = $resultItem.height();
+                                var X = $resultItem.offset().left;
+                                var Y = $resultItem.offset().top;
+
+                                if (clientX > X && clientY > Y && clientX < X + width + 10 && clientY < Y + height) {} else {
+                                    $resultItem.removeClass('hover-item-content');
+                                    $resultItem.popover('hide');
+                                    $resultItem = null;
+                                }
+                            }
+                        });
+                    }
+                });
+                //set text
+                var repAuthor = aff.aff[0] + '/';
                 aff.persons.person.forEach(function (per) {
                     repAuthor += per + ' ';
                 });
+                $spanContent.text(repAuthor);
+
+                //set popover content
                 if (aff.persons.report) {
-                    repName = '<b>相关研报:</b>';
+                    //set popover title
+                    $spanContent.attr('title', '相关研报:');
+                    var repContent = '';
                     aff.persons.report.forEach(function (name) {
-                        repName += name.reportDate + ':' + name.reportName + '<br>';
+                        repContent += name.reportDate + ':' + name.reportName + '\n';
                     });
+                    $spanContent.attr('data-content', repContent);
                 }
-
-                repCont += repAuthor + '<br>' + repName;
+                //append to item
+                $item.append(spanContent);
             });
-
-            $(reP).html(repCont).css({ display: 'none' });
-            $(repList).append(reP);
+            //append to card content
+            $(content).append(item);
+            //append to card 
+            $card.append(content);
+            //append to fragment
+            $fragment.append(card);
+            //append fragment to DOM
+            $resultList.append(fragment);
         });
     });
-}
 
-function _showRepList(e) {
-
-    var target = e.target;
-
-    $(target).toggleClass('chosnSt');
-
-    var i = $(target).attr('data-i');
-    var rep = $("#report-list").children()[i];
-    $(rep).toggle();
-}
-
-function _hideRepList(e) {
-    var target = e.target;
-
-    $(target).toggleClass('chosnSt');
-
-    var i = $(target).attr('data-i');
-    var rep = $("#report-list").children()[i];
-    $(rep).toggle();
-}
-
-function _renderIndusList(indus) {
-    var fragment = document.createDocumentFragment();
-
-    indus.forEach(function (cur, index) {
-        var tab = document.createElement('SPAN');
-        $(tab).text(cur.indus[0]);
-        $(tab).attr('data-index', index);
-        $(tab).addClass('indus-tab');
-        $(fragment).append(tab);
-    });
-
-    $('#search-industry').append(fragment);
-}
-
-function onChosenIndus(that, event) {
-    var title = document.getElementById('object');
-    var index = $(event.target).attr('data-index');
-    var indusObj = resIndus[index];
-
-    if (indusObj) {
-        $(title).text(indusObj.indus[0]);
-        _renderResults(indusObj);
-    }
-
-    event.stopPropagation();
-}
-
-function onChosnPerson(that, event) {
-    var target = event.target;
-    if (target.tagName === 'SPAN') {
-        switch ($(target).attr('data-id')) {
-            case '1':
-                _renderResults(resBuy);
-                break;
-            case '2':
-                _renderResults(resSell);
-                break;
-            case '3':
-                _renderResults(resAll);
-                break;
-        }
-    }
+    //scroll to result list
+    $("html, body").animate({ scrollTop: $('section#research-list').offset().top - 100 }, 800);
 }
 
 function _renderMap(chart, data) {
@@ -183,7 +377,6 @@ function _renderMap(chart, data) {
         };
     });
 
-    console.log(max);
     // configure echart
     chart.showLoading();
 
@@ -216,7 +409,7 @@ function _renderMap(chart, data) {
                 },
                 itemStyle: {
                     emphasis: {
-                        areaColor: '#d94e5d'
+                        borderColor: '#9900ff'
                     }
                 },
                 data: showData
@@ -228,9 +421,37 @@ function _renderMap(chart, data) {
     //bind click
     chart.on('click', function (params) {
         console.log(params);
-        var codes = params.data.more;
-        _renderResults(codes);
+
+        var newMapIndex = params.dataIndex;
+
+        if (newMapIndex != mapIndex) {
+            // cancel highlight
+            _clearSource();
+            _clearTheme();
+            _clearMap(chart);
+            //highlight area
+            mapIndex = newMapIndex;
+            chart.dispatchAction({
+                type: 'highlight',
+                seriesIndex: 0,
+                dataIndex: mapIndex
+            });
+
+            var codes = params.data.more;
+            _renderResults(codes);
+        }
     });
 
     chart.hideLoading();
+}
+
+function _clearMap(chart) {
+    if (mapIndex != -1) {
+        chart.dispatchAction({
+            type: 'downplay',
+            seriesIndex: 0,
+            dataIndex: mapIndex
+        });
+        mapIndex = -1;
+    }
 }
