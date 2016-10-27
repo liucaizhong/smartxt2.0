@@ -10,4 +10,14 @@ $(document).ready(function () {
             $('#header').removeClass('scrolled');
         }
     });
+
+    $('#searchKeyword').on('input propertychange', function (e) {
+        var input = $(this)[0];
+
+        if ($(input).val()) {
+            $('#goBtn').attr('disabled', false);
+        } else {
+            $('#goBtn').attr('disabled', true);
+        }
+    });
 });

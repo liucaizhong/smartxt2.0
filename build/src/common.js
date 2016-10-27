@@ -36,7 +36,7 @@ $(document).ready(function () {
     /* Ref: https://github.com/CWSpear/bootstrap-hover-dropdown */
     /* apply dropdownHover to all elements with the data-hover="dropdown" attribute */
 
-    $('[data-hover="dropdown"]').dropdownHover();
+    // $('[data-hover="dropdown"]').dropdownHover();
 
     /* ======= jQuery Placeholder ======= */
     /* Ref: https://github.com/mathiasbynens/jquery-placeholder */
@@ -62,6 +62,28 @@ $(document).ready(function () {
         $('body').append(qrCode);
     }, function (e) {
         $('img').remove('#weixin-qr');
+    });
+
+    //hover event
+    $('[data-hover="dropdown"]').hover(function (e) {
+        // console.log('hover start!');
+        var $this = $(this);
+        $this.find('div.dropdown-menu').css('display', 'block');
+    }, function (e) {
+        // console.log('hover stop!');
+        var $this = $(this);
+        var div = $this.find('div')[0];
+        var num = $(div).children().length + 1;
+        var top = $this.offset().top;
+        var left = $this.offset().left;
+        var width = left + 100;
+        var height = top + num * 60;
+        var clientX = e.pageX;
+        var clientY = e.pageY;
+
+        if (clientX <= left || clientX >= width || clientY <= top || clientY >= height) {
+            $this.find('div.dropdown-menu').css('display', 'none');
+        }
     });
 });
 

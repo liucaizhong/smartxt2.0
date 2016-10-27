@@ -33,51 +33,6 @@ function onStar(that) {
 	//to do
 }
 
-function onCollection(that) {
-	var $trigger = $(that);
-
-	if($trigger.hasClass('fa-angle-double-down')) {
-		$trigger.removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
-	} else if($trigger.hasClass('fa-angle-double-up')) {
-		$trigger.removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
-	}
-	
-	//show collection
-	//to do later
-	//ajax get collections
-	
-	$('div.collections').css({"display": "table"});
-	$('div.collections>*').slideToggle(1000);
-}
-
-function delStar(that) {
-	//undo collect
-	var $btn = $(that);
-	whichCollection = that;
-	$btn.toggleClass('undo-collect');
-
-	$('div#info-msg').show(500);
-}
-
-function onCheckCollection(that) {
-	//check collection
-	var parent = $(that).parent();
-	$(parent).removeClass('btn-invalid').addClass('btn-valid');
-
-	//ajax get show echarts
-	//to do later
-}
-
-function delCollection(that) {
-	var collection = $(whichCollection).parent().parent();
-	whichCollection = {};
-	//ajax post delete collection in the database
-	//to do later
-	
-	collection.remove();
-	$('div#info-msg').hide(500);
-}
-
 function delAlert(that) {
 	var parent = $(that).parent();
 	$(parent).hide(500);
@@ -86,10 +41,6 @@ function delAlert(that) {
 		$(whichCollection).toggleClass('undo-collect');
 		whichCollection = {};
 	}
-}
-
-function onSubmit(that) {
-
 }
 
 function _renderChart(chart, url) {

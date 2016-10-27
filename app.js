@@ -15,6 +15,10 @@ var pricing = require('./routes/pricing');
 var explore = require('./routes/explore');
 var news = require('./routes/news');
 var research = require('./routes/research');
+var user = require('./routes/user');
+//solve cross client problem
+//for the purpose of development
+var cross = require('./routes/cross');
 
 var app = express();
 
@@ -45,6 +49,12 @@ app.use('/pricing', pricing);
 app.use('/explore', explore);
 app.use('/news', news);
 app.use('/research', research);
+app.use('/user', user);
+//solve cross client problem
+//for the purpose of development
+app.get('/cross', function(req, res) {
+  cross.get(req, res);
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

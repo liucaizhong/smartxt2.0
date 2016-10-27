@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>智能中文-话题探索</title>
+    <title>智能中文-用户中心</title>
     <!-- Meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <meta name="description" content="smartxt2.0 topic search">
+    <meta name="description" content="smartxt2.0 theme search">
     <meta name="author" content="liucaizhong">    
     <link rel="shortcut icon" href="/img/icon/favicon.ico">  
     <!-- Global CSS -->
@@ -66,71 +66,106 @@
                 </nav><!-- //nav -->
             </div><!-- //nav-right  -->       
         </div><!--//container-->
-    </header><!--//header-->    
-                 
-    <section class="topic-conditions">
-        <div class="container bottom-line">
-            <form id="form-topic" action="">
-                <div class="row">
-                    <!-- Stock -->
-                    <label for="stockInput" class="col-xs-4 col-lg-2 col-form-label form-label"><i class="fa fa-rocket" aria-hidden="true"></i>股票名称</label>
-                    <input id="stockInput" name="stock" type="text" class="topic-input col-xs-5 col-lg-2 " placeholder="输入股票名称"></input>
-                    <!-- Event -->
-                    <label for="eventInput" class="col-xs-4 col-lg-2 col-form-label form-label"><i class="fa fa-file-text-o" aria-hidden="true"></i>话题信息</label>
-                    <input id="eventInput" name="event" type="text" class="topic-input col-xs-5 col-lg-2 " placeholder="输入话题关键字"></input>
-                    <span><i class="fa fa-star-o fa-2x btn-star" title="收藏" onclick="onStar(this)" aria-hidden="true"></i></span>
-                    <button type="submit" class="btn btn-primary btn-submit-topic">提交事件</button>
-                </div>
-            </form>
-            <!-- alert -->
-            <div id="error-msg" class="alert alert-danger alert-dismissible topic-alert" role="alert">
-                <button type="button" class="close" aria-label="Close" onclick="delAlert(this)">
-                <span aria-hidden="true">&times;</span>
-                </button>
-                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                <strong></strong> 
+    </header><!--//header-->     
+    
+    <!-- ******COLLECTION****** -->
+    <section class="user-section">
+        <div class="container">
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#stock" role="tab">我的自选</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#theme" role="tab">关注主题</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#topic" role="tab">关注话题</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#profile" role="tab">用户信息</a>
+              </li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content user-content">
+              <div class="tab-pane active" id="stock" role="tabpanel">
+                  <div class="row user-row">
+                        <div class="col-xs-8 col-lg-4">
+                            <div class="input-group">
+                              <input id="stockInput" type="text" class="form-control" placeholder="请输入股票代码/名称">
+                              <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button" onclick="onAddStock(this)">添加</button>
+                              </span>
+                            </div>
+                            <div id="stockList" class="stock-list">
+                                <ul class="stock-ul">
+                                </ul>
+                            </div>
+                        </div>
+                  </div>
+                  <div class="table-top col-xs-12 col-lg-6">
+                      <div id="del-all" class="row table-row none">
+                            <button class="btn btn-primary btn-del-all" type="button" onclick="onDelAllStock(this)">删除</button>
+                            <div class="span-checknum">您已选择<span id="stockChecked">10</span>/<span id="stockAll">20</span>支</div>
+                      </div>
+                      <div class="row table-header">
+                            <div class="choose-all col-xs-8 col-lg-8" onclick="onCheckAll(event)">
+                                <input id="checkAll" type="checkbox">
+                                <a>全部股票</a>
+                            </div>
+                            <div class="col-xs-4 col-lg-4 span-del">
+                                <span>删除</span>
+                            </div>
+                      </div>
+                      <div id="tableContent">
+                          <div class="row table-content">
+                              <div class="col-xs-8 col-lg-8" onclick="onCheck(event)">
+                                    <input type="checkbox">
+                                    <span class="stock-code">600100</span>
+                                    <span class="stock-name">大大大大大大</span>
+                              </div>
+                              <div class="col-xs-4 col-lg-4 span-fork">
+                                    <i class="fa fa-times" aria-hidden="true" onclick="onDel(this)"></i>
+                              </div>
+                          </div>
+                          <div class="row table-content">
+                              <div class="col-xs-8 col-lg-8" onclick="onCheck(event)">
+                                    <input type="checkbox">
+                                    <span class="stock-code">600100</span>
+                                    <span class="stock-name">大大大大大大</span>
+                              </div>
+                              <div class="col-xs-4 col-lg-4 span-fork">
+                                    <i class="fa fa-times" aria-hidden="true" onclick="onDel(this)"></i>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="tab-pane" id="theme" role="tabpanel">theme</div>
+              <div class="tab-pane" id="topic" role="tabpanel">topic</div>
+              <div class="tab-pane" id="profile" role="tabpanel">profile</div>
             </div>
-        </div>  
-    </section>                
-          
-    <!-- ******CHARTS****** -->
-    <section class="charts">
-        <h1>charts</h1>
-        <pre>
-            1
-            2
-            3
-            4
-            5
-        </pre>
+        </div>
     </section>
-    <section class="charts">
-        <h1>charts</h1>
-        <pre>
-            1
-            2
-            3
-            4
-        </pre>
-    </section>
-    <section class="charts">
-        <h1>charts</h1>
-        <pre>
-            1
-            2
-            3
-            4
-        </pre>
-    </section>
-    <section class="charts">
-        <h1>charts</h1>
-        <pre>
-            1
-            2
-            3
-            4
-        </pre>
-    </section>
+
+    <!-- ******alert dialog****** -->
+    <div id="global-alert" class="none">
+        <div class="alert-back"></div>
+        <div class="alert-dialog">
+            <div class="alert-title">
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                <span id="alertTitle"></span>
+            </div>
+            <div class="alert-content">
+                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                <span id="alertText"></span>
+            </div>
+            <div class="alert-button">
+                <button type="button" class="btn btn-danger" onclick="onCancel()">取消</button>
+                <button type="button" class="btn btn-success" onclick="onConfirm()">确定</button>
+            </div>
+        </div>
+    </div>
      
     <!-- ******FOOTER****** --> 
     <footer class="footer">
@@ -151,8 +186,7 @@
     <!-- Javascript -->   
     <!-- get data from nodejs -->
     <script>
-        window.topicRes = '{{jsonData}}';
-        window.topicCond = '{{reqCond}}';
+        window.userRes = '{{jsonData}}';
     </script>
     <!-- jquery -->
     <script type="text/javascript" src="/lib/jquery/js/jquery.min.js"></script>
@@ -170,7 +204,7 @@
     <script type="text/javascript" src="/lib/echarts/macarons.js"></script>
     <!-- custom -->
     <script type="text/javascript" src="/src/common.js"></script>
-    <script type="text/javascript" src="/src/topic.js"></script>
+    <script type="text/javascript" src="/src/user.js"></script>
             
 </body>
 </html> 
